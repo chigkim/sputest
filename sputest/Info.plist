@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleIdentifier</key>
-	<string></string>
 	<key>NSUserNotificationAlertStyle</key>
 	<string>alert</string>
 	<key>SUFeedURL</key>
@@ -11,8 +9,6 @@
 	<key>SUPublicEDKey</key>
 	<string>mag38x5Zl6J5oFFwEeO4MfVY+4jJqEsDZPL6nHmbPg8=</string>
 	<key>SUScheduledCheckInterval</key>
-	<integer>3600</integer>
-	<key>LSUIElement</key>
-	<true/>
+	<integer>60</integer>
 </dict>
 </plist>
