@@ -15,19 +15,27 @@ class AutoUpdateManager: NSObject, SPUUpdaterDelegate, SPUStandardUserDriverDele
 	static let shared = AutoUpdateManager()
 
 	private var updaterController: SPUStandardUpdaterController?
-	private let UPDATE_NOTIFICATION_IDENTIFIER = "VOCRUpdateCheck"
+	private let UPDATE_NOTIFICATION_IDENTIFIER = "SPUUpdateCheck"
 		var supportsGentleScheduledUpdateReminders: Bool {
 		return true
 	}
+	var preRelease = false
 
 	private override init() {
 		super.init()
-		self.updaterController = SPUStandardUpdaterController(startingUpdater: true, updaterDelegate: self, userDriverDelegate: self)
 		UNUserNotificationCenter.current().delegate = self
+		self.updaterController = SPUStandardUpdaterController(startingUpdater: true, updaterDelegate: self, userDriverDelegate: self)
+		if let automaticallyChecksForUpdates = self.updaterController?.updater.automaticallyChecksForUpdates, automaticallyChecksForUpdates {
+			self.updaterController?.updater.checkForUpdatesInBackground()
+		}
 	}
 
 	func checkForUpdates() {
 		updaterController?.checkForUpdates(nil)
+	}
+
+	func allowedChannels(for updater: SPUUpdater) -> Set<String> {
+		return (preRelease) ? Set(["pre"]) : Set()
 	}
 
 	func updater(_ updater: SPUUpdater, willScheduleUpdateCheckAfterDelay delay: TimeInterval) {

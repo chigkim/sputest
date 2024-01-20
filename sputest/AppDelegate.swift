@@ -20,12 +20,24 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		}
 		NSApp.setActivationPolicy(.accessory)
 		let menu = NSMenu()
+		let defaults = UserDefaults.standard
+		autoUpdateManager.preRelease = defaults.bool(forKey:"preRelease")
+		let preReleaseMenuItem = NSMenuItem(title: "Pre-release", action: #selector(togglePreRelease(_:)), keyEquivalent: "")
+		preReleaseMenuItem.state = (autoUpdateManager.preRelease) ? .on : .off
+		menu.addItem(preReleaseMenuItem)
 		menu.addItem(NSMenuItem(title: "Check for Updates", action: #selector(checkForUpdates(_:)), keyEquivalent: ""))
 		menu.addItem(NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
 		statusItem.menu = menu
 		let windows = NSApplication.shared.windows
 		NSApplication.shared.hide(nil)
 		windows[1].close()
+	}
+
+	@objc func togglePreRelease(_ sender: NSMenuItem) {
+		sender.state = (sender.state == .off) ? .on : .off
+		autoUpdateManager.preRelease = sender.state == .on
+		let defaults = UserDefaults.standard
+		defaults.set(autoUpdateManager.preRelease, forKey:"preRelease")
 	}
 
 	@objc func checkForUpdates(_ sender: NSMenuItem) {
